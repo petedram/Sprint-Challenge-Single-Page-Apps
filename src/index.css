@@ -37,3 +37,15 @@ main {
 header h1 {
   text-align: center;
 }
+
+.contain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 20px;
+}
+
+.character-card {
+
+}

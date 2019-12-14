@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {
+  Container, Row, Card, CardText, CardBody, CardHeader, Col, CardImg
+} from 'reactstrap';
 
 const CharacterList = props => {
   const [characters, setCharacters] = useState([]);
@@ -34,14 +37,22 @@ function CharacterDetails({ character }) {
   const { id, name, status, species, image } = character;
   console.log("checking props", character);
   return (
-    <Link to={`/${id}`}>
-      <div className="character-card">
-        <img src={image} alt={name} />
-        <h2>{name}</h2>
-        <h3>{status}</h3>
-        <h3>{species}</h3>
+      <div className="contain">
+      <Container className='character-card'>
+        <Row xs='2'>
+            <Col>
+                <Card>
+                    <Link to={`/${id}`}>  
+                    <CardHeader>Name: {name}</CardHeader>
+                    <CardImg width='300px' src={image} alt={name} />
+                    </Link>
+                    <CardBody><CardText>Status: {status}</CardText></CardBody>
+                    <CardBody><CardText>Species: {species}</CardText></CardBody>
+                </Card>
+            </Col>
+        </Row>
+      </Container>
       </div>
-    </Link>
   );
 }
 
