@@ -37,9 +37,15 @@ const CharacterList = props => {
 var listCharacterNames;
 listCharacterNames = characters.map(item => item.name);
 
+var listSpecies;
+listSpecies = characters.map(item => item.species);
+
 // state for searchTerm and searchResults
 const [searchTerm, setSearchTerm] = useState("");
+const [searchTermSpecies, setSearchTermSpecies] = useState("");
 const [searchResults, setSearchResults] = useState(listCharacterNames);
+const [searchResultsSpecies, setSearchResultsSpecies] = useState(listSpecies);
+
 
 // useEffect for searchTerm
 useEffect(() => {}, [searchTerm]);
@@ -55,29 +61,67 @@ useEffect(() => {}, [searchTerm]);
     setSearchResults(results);
   };
 
+  const handleChangeSpecies = event => {
+    setSearchTermSpecies(event.target.value);
+
+    const results = listSpecies.filter(character => {
+      return character.toLowerCase().includes(searchTermSpecies.toLowerCase());
+    });
+
+    setSearchResultsSpecies(results);
+  };
+
 
   console.log("search term", searchTerm);
   console.log('newNames', listCharacterNames);
   console.log('searchresults', searchResults);
+  console.log('searchresultsSpeccies', searchResultsSpecies);
+
+
+  function firstLoad (item) {
+    if(searchTerm.length === 0) {
+      return <CharacterDetails key={item.id} character={item} />
+    } else {
+      return searchResults.includes(item.name, 0) && <CharacterDetails key={item.id} character={item} /> 
+    }
+  };
 
 
   return (
     <div className="character-list">
       <form>
-        <label htmlFor="name">Search:</label>
+        <label htmlFor="name">Search Name:</label>
           <input
             id="name"
             type="text"
             name="textfield"
-            placeholder="Search"
+            placeholder="Search Name"
             onChange={handleChange}
             value={searchTerm}
           />
       </form>
+
+      <form>
+        <label htmlFor="name">Search Species:</label>
+          <input
+            id="species"
+            type="text"
+            name="textfield"
+            placeholder="Search Species"
+            onChange={handleChangeSpecies}
+            value={searchTermSpecies}
+          />
+      </form>
+
+      {console.log('slength', searchTerm.length)}
+
       {characters.map(item => (
 
-        searchResults.includes(item.name, 0) && <CharacterDetails key={item.id} character={item} />
+        // //if searchterm.length = 0 
+        // searchResults.includes(item.name, 0) && <CharacterDetails key={item.id} character={item} />
         
+        firstLoad(item)
+
       ))}
 
     </div>
