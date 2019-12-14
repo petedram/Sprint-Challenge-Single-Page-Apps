@@ -1,16 +1,48 @@
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-export default function CharacterList() {
-  // TODO: Add useState to track data from useEffect
-
+const CharacterList = props => {
+  const [characters, setCharacters] = useState([]);
   useEffect(() => {
-    // TODO: Add API Request here - must run in `useEffect`
-    //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
+    const getCharacters = () => {
+      axios
+        .get("https://rickandmortyapi.com/api/character/")
+        .then(response => {
+          setCharacters(response.data.results);
+          console.log(response.data.results);
+        })
+        .catch(error => {
+          console.error("Server Error", error);
+        });
+    };
+
+    getCharacters();
   }, []);
 
   return (
-    <section className="character-list">
-      <h2>TODO: `array.map()` over your state here!</h2>
-    </section>
+    <div className="character-list">
+      {characters.map(item => (
+        <CharacterDetails key={item.id} character={item} />
+      ))}
+
+    </div>
+  );
+};
+
+function CharacterDetails({ character }) {
+  const { id, name, status, species, image } = character;
+  console.log("checking props", character);
+  return (
+    <Link to={`/${id}`}>
+      <div className="character-card">
+        <img src={image} alt={name} />
+        <h2>{name}</h2>
+        <h3>{status}</h3>
+        <h3>{species}</h3>
+      </div>
+    </Link>
   );
 }
+
+export default CharacterList;
